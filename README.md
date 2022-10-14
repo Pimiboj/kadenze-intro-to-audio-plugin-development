@@ -1,1 +1,1 @@
-# kadenze-intro-to-audio-plugin-development
+# Kadenze Intro to Audio Plugin Development
