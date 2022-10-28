@@ -65,6 +65,7 @@ KadenzeChorusFlangerAudioProcessor::KadenzeChorusFlangerAudioProcessor()
     mFeedbackLeft = 0;
     mFeedbackRight = 0;
     mDelayTimeSmoothed = 0;
+    mLFOPhase = 0;
 }
 
 KadenzeChorusFlangerAudioProcessor::~KadenzeChorusFlangerAudioProcessor()
@@ -148,6 +149,7 @@ void KadenzeChorusFlangerAudioProcessor::prepareToPlay (double sampleRate, int s
     }
 
     mCircularBufferWriteHead = 0;
+    mLFOPhase = 0;
 
     mDelayTimeSmoothed = 1;
 }
@@ -204,7 +206,18 @@ void KadenzeChorusFlangerAudioProcessor::processBlock (juce::AudioBuffer<float>&
 
     for (int i = 0; i < buffer.getNumSamples(); i++)
     {
-        mDelayTimeSmoothed = mDelayTimeSmoothed - 0.0001f * (mDelayTimeSmoothed);
+        float lfoOut = sin(2 * juce::MathConstants<float>().pi * mLFOPhase);
+
+        mLFOPhase += *mRateParameter * getSampleRate();
+
+        if (mLFOPhase > 1)
+        {
+            mLFOPhase -= 1;
+        }
+
+        float lfoOutMapped = juce::jmap(lfoOut, -1.0f, 1.0f, 0.005f, 0.030f);
+
+        mDelayTimeSmoothed = mDelayTimeSmoothed - 0.001f * (mDelayTimeSmoothed - lfoOutMapped);
         mDelayTimeInSamples = getSampleRate() * mDelayTimeSmoothed;
 
         mCircularBufferLeft[mCircularBufferWriteHead] = leftChannel[i] + mFeedbackLeft;

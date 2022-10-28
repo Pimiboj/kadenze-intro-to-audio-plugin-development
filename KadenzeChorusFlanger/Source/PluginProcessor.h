@@ -60,6 +60,8 @@ public:
 
 private:
     //==============================================================================
+    float mLFOPhase;
+    
     float mDelayTimeSmoothed;
 
     juce::AudioParameterFloat* mDryWetParameter;

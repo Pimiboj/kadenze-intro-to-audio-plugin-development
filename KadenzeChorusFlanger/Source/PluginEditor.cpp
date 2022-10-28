@@ -32,7 +32,7 @@ KadenzeChorusFlangerAudioProcessorEditor::KadenzeChorusFlangerAudioProcessorEdit
     mDryWetSlider.onDragStart = [dryWetParameter] { dryWetParameter->beginChangeGesture(); };
     mDryWetSlider.onDragEnd = [dryWetParameter] { dryWetParameter->endChangeGesture(); };
 
-    juce::AudioParameterFloat* feedbackParameter = (juce::AudioParameterFloat*)params.getUnchecked(1);
+    juce::AudioParameterFloat* feedbackParameter = (juce::AudioParameterFloat*)params.getUnchecked(4);
 
     mFeedbackSlider.setBounds(100, 0, 100, 100);
     mFeedbackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
