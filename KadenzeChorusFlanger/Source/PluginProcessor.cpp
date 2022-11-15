@@ -192,6 +192,13 @@ void KadenzeChorusFlangerAudioProcessor::processBlock (juce::AudioBuffer<float>&
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    DBG("DRY WET: " << * mDryWetParameter);
+    DBG("DEPTH: " << *mDepthParameter);
+    DBG("RATE: " << *mRateParameter);
+    DBG("PHASE OFFSET: " << *mPhaseOffsetParameter);
+    DBG("FEEDBACK: " << *mFeedbackParameter);
+    DBG("TYPE: " << (int)* mTypeParameter);
+
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -208,12 +215,14 @@ void KadenzeChorusFlangerAudioProcessor::processBlock (juce::AudioBuffer<float>&
     {
         float lfoOut = sin(2 * juce::MathConstants<float>().pi * mLFOPhase);
 
-        mLFOPhase += *mRateParameter * getSampleRate();
+        mLFOPhase += *mRateParameter / getSampleRate();
 
         if (mLFOPhase > 1)
         {
             mLFOPhase -= 1;
         }
+
+        lfoOut *= *mDepthParameter;
 
         float lfoOutMapped = juce::jmap(lfoOut, -1.0f, 1.0f, 0.005f, 0.030f);
 
