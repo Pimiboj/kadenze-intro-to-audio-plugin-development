@@ -59,11 +59,7 @@ public:
     float lin_interp(float sample_x0, float sample_x1, float inPhase);
 
 private:
-    //==============================================================================
-    float mLFOPhase;
-    
-    float mDelayTimeSmoothed;
-
+    /* Parameter Declarations */
     juce::AudioParameterFloat* mDryWetParameter;
     juce::AudioParameterFloat* mDepthParameter;
     juce::AudioParameterFloat* mRateParameter;
@@ -72,17 +68,18 @@ private:
 
     juce::AudioParameterInt* mTypeParameter;
 
+    /* Circular Buffer Data */
     float mFeedbackLeft;
     float mFeedbackRight;
-
-    float mDelayTimeInSamples;
-    float mDelayReadHead;
 
     int mCircularBufferLength;
     int mCircularBufferWriteHead;
 
     std::unique_ptr<float[]> mCircularBufferLeft;
     std::unique_ptr<float[]> mCircularBufferRight;
+
+    /* LFO data */
+    float mLFOPhase;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (KadenzeChorusFlangerAudioProcessor)
